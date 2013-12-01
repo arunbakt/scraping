@@ -47,8 +47,8 @@ try {
                     var occupationElement = elements[i].getElementsByTagName("td")[1];
                     if(occupationElement.textContent == 'Judge')
                     {
-                          judge.name = personNameElement.textContent;
-                          judge.href = hrefElement.href;
+                          judge.name = personNameElement.textContent.trim();
+                          judge.next_page = hrefElement.href;
                           console.log(JSON.stringify(judge));
                     }
                 }

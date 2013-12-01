@@ -15,7 +15,7 @@ var runningPhantom =0;
 
 while (i<564) {
 
-    var child=spawn('phantomjs', ['openbrowser.js', i]);
+    var child=spawn('phantomjs', ['scrap_nndb_judges.js', i]);
     child.stdout.on('data',function(data){
         judgesString = judgesString + decoder.write(data);
 
@@ -48,10 +48,8 @@ setTimeout(function(){
 
 setTimeout(function() {
    getMoreInfo();
+   printJudges(judges2);
 },40000);
-
-printJudges(judges2);
-
 
 function lineupWork(judge){
     if(runningPhantom <= maxPhantomJsProcess)
@@ -74,9 +72,7 @@ var getMoreInfo = function() {
         console.log("RETRIEVE for "+judges[y]);
         lineupWork(judges[y]);
         y++;
-
     }
-
 }
 
 var visitPage = function(script, judge) {
@@ -90,7 +86,7 @@ var visitPage = function(script, judge) {
     });
 
     child.stderr.on('data', function (data) {
-       // console.log('stderr: ' + data);
+    //    console.log('stderr: ' + data);
     });
 
     child.on('exit', function (code) {
@@ -106,7 +102,6 @@ var visitPage = function(script, judge) {
 
 function printJudges(judgesArray) {
 
-    console.log("Length of judgesArray "+judgesArray.length+" count "+totalJudges)
 
     if(judgesArray.length == totalJudges) {
         clearTimeout();
