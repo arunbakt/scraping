@@ -34,8 +34,13 @@ try {
 
             page.evaluate(function(){
 
-
                 var element = document.getElementsByTagName('table')[3];
+
+                if(element == undefined) {
+                    console.log("NO_MORE_RESULTS");
+                    return;
+                }
+
                 var elements = element.getElementsByTagName('tr');
                 for(var i=0; i<elements.length; i++)
                 {
