@@ -1,6 +1,7 @@
 var http = require('http');
 var spawn=require('child_process').spawn;
 var StringDecoder = require('string_decoder').StringDecoder;
+var decoder = new StringDecoder('utf8');
 
 var off_set=0;
 var totalJudges = 0;
@@ -9,7 +10,6 @@ var judges = [];
 var judges2 =[];
 var judgesByState = {};
 
-var decoder = new StringDecoder('utf8');
 var judgesString = "";
 
 var maxPhantomJsProcess = 20;
@@ -52,7 +52,13 @@ function show(res) {
         if (judgesByState.hasOwnProperty(key)) {
             console.log(key + " -> " + judgesByState[key]);
             content = content + '<table><tr><td><b>' + key+ '</b></td></tr>';
-            judgesByState[key].forEach(function(judge){
+            var judges = judgesByState[key];
+
+            judges.sort(function(a,b){
+                return (a.militaryService > b.militaryService)?1:((b.militaryService> a.militaryService)?-1:0);
+            });
+
+            judges.forEach(function(judge){
                 var mS = (judge.militaryService==undefined)?'No':'Yes';
                 content = content + '<tr><td>'+ judge.name +'</td><td>'+ mS +'</td></tr>'
             });
@@ -106,13 +112,12 @@ function initiateScrapeForJudges() {
     }
 
 
-
 }
 
 function scrapeForJudges(offSet) {
 
     console.log("SPAWN");
-    var child=spawn('phantomjs', ['scrap_nndb_judges.js', off_set]);
+    var child=spawn('phantomjs', ['scrape_nndb_judges.js', off_set]);
     runningPhantom++;
 
     child.stdout.on('data',function(data){
