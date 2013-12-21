@@ -158,7 +158,7 @@ function lineupWork(judge){
     if(runningPhantom <= maxPhantomJsProcess)
     {
      //   console.log("runnnigphantom "+runningPhantom+" compared to "+maxPhantomJsProcess);
-        visitPage('retrive_judge_info.js', judge);
+        visitPage('retrieve_judge_info.js', judge);
     }else
     {
        // console.log("Lineup work");

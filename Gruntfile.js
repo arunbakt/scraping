@@ -8,6 +8,9 @@ module.exports = function (grunt) {
             },
             cobertura: {
                 cmd: 'node node_modules/istanbul/lib/cli.js report --root build/coverage --dir build/coverage/cobertura cobertura'
+            },
+            start: {
+                cmd: 'node src/nndb_runner.js'
             }
         },
 
@@ -30,7 +33,10 @@ module.exports = function (grunt) {
                 consolidate: true
             }
 
-        }
+        },
+
+
+
         });
 
     // Load tasks
@@ -40,7 +46,7 @@ module.exports = function (grunt) {
 
     // Register tasks.
     grunt.registerTask('test', ['jasmine_node']);
-    grunt.registerTask('cover', ['bgShell:coverage', 'open']);
-
+    grunt.registerTask('cover', ['bgShell:cobertura', 'open']);
+    grunt.registerTask('run', ['jasmine_node','bgShell:coverage', 'open', 'bgShell:start']);
 
 };

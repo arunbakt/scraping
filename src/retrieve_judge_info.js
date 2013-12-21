@@ -22,11 +22,10 @@ page.onConsoleMessage = function(msg) {
 
 try {
 
+    page.settings.resourceTimeout = 500; // 5 seconds
+
 
     page.open(judge.next_page,function(status) {
-
-
-
         if(status === "success") {
 
             page.evaluate(function(judge){
@@ -62,6 +61,6 @@ try {
 
 }
 catch(e){
-
+    console.log("Error"+e);
 }
 

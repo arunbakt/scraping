@@ -22,7 +22,7 @@ describe("Verify", function() {
         spyOn(child_process,"spawn").andReturn(child_process);
         var nndb = new Nndb(child_process);
 
-        nndb.invokePhantomProcess('../src/TDDQuestion.js', 0);
+        nndb.scrapeForJudges('../src/TDDQuestion.js');
         expect(child_process.spawn).toHaveBeenCalledWith( 'phantomjs',['../src/TDDQuestion.js',0]);
 
     });
