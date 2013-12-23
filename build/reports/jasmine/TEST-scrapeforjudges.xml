@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-<testsuite name="scrape for judges " errors="0" tests="3" failures="0" time="0.006" timestamp="2013-12-20T16:17:54">
-  <testcase classname="scrape for judges " name="spawns child process" time="0.001"></testcase>
-  <testcase classname="scrape for judges " name="produces json data of array length one when child processes&apos;s stdout prints single line of scraped data" time="0.002"></testcase>
+<testsuite name="scrape for judges " errors="0" tests="3" failures="0" time="0.007" timestamp="2013-12-23T10:15:25">
+  <testcase classname="scrape for judges " name="spawns child process" time="0.003"></testcase>
+  <testcase classname="scrape for judges " name="produces json data of array length one when child processes&apos;s stdout prints single line of scraped data" time="0.001"></testcase>
   <testcase classname="scrape for judges " name="produces empty judges array when no judges are found" time="0"></testcase>
 </testsuite>
-<testsuite name="scrape for judges .Scrape for additional information for judges" errors="0" tests="2" failures="0" time="0.002" timestamp="2013-12-20T16:17:54">
+<testsuite name="scrape for judges .Scrape for additional information for judges" errors="0" tests="2" failures="0" time="0.002" timestamp="2013-12-23T10:15:25">
   <testcase classname="scrape for judges .Scrape for additional information for judges" name="produces birthplace and military service information" time="0.001"></testcase>
   <testcase classname="scrape for judges .Scrape for additional information for judges" name="military service is true when scraping finds military service information" time="0"></testcase>
 </testsuite>
-<testsuite name="scrape for judges .When additional info element are not present in the page" errors="0" tests="2" failures="0" time="0.001" timestamp="2013-12-20T16:17:54">
+<testsuite name="scrape for judges .When additional info element are not present in the page" errors="0" tests="2" failures="0" time="0" timestamp="2013-12-23T10:15:25">
   <testcase classname="scrape for judges .When additional info element are not present in the page" name="birthplace is marked as &apos;Not Available&apos;" time="0"></testcase>
-  <testcase classname="scrape for judges .When additional info element are not present in the page" name="military service is undefined" time="0.001"></testcase>
+  <testcase classname="scrape for judges .When additional info element are not present in the page" name="military service is undefined" time="0"></testcase>
 </testsuite>
 </testsuites>

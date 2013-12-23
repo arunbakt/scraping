@@ -10,7 +10,7 @@ module.exports = function (grunt) {
                 cmd: 'node node_modules/istanbul/lib/cli.js report --root build/coverage --dir build/coverage/cobertura cobertura'
             },
             start: {
-                cmd: 'node src/nndb_runner.js'
+                cmd: 'node src/start.js'
             }
         },
 

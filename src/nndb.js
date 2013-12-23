@@ -5,6 +5,7 @@ var async = require('async');
 
 Nndb = function(child_process) {
 
+    this.judgesData = [];
     this.child_process = child_process;
     this.judgesDataString = "";
     this.MAX_OFFSET = -1;
@@ -15,7 +16,6 @@ Nndb = function(child_process) {
 
 };
 
-Nndb.prototype.judgesData = [];
 
 var scrape = function(nndb, phantomScriptToRun, offset) {
 
@@ -25,7 +25,6 @@ var scrape = function(nndb, phantomScriptToRun, offset) {
     child.stdout.on('data',function(data){
 
         nndb.judgesDataString = nndb.judgesDataString  + data;
-      //  console.log(nndb.judgesDataString);
         if(nndb.judgesDataString.indexOf('NO_MORE_RESULTS') != -1) {
             nndb.MAX_OFFSET = nndb.currOffset;
         }
@@ -45,7 +44,7 @@ var scrape = function(nndb, phantomScriptToRun, offset) {
 
 Nndb.prototype.scrapeForJudges = function( phantomScriptToRun, nextStep ) {
 
-   var currNndb = this;
+   var nndb = this;
    if(this.currOffset > this.MAX_OFFSET)
    {
        if( this.runningPhantomCount < this.MAX_CONCURRENT_PHANTOM ) {
@@ -54,13 +53,13 @@ Nndb.prototype.scrapeForJudges = function( phantomScriptToRun, nextStep ) {
            this.currOffset = this.currOffset + this.OFFSET_INCREMENT;
        }
 
-       setTimeout(function(){currNndb.scrapeForJudges(phantomScriptToRun, nextStep)}, 500);
+       setTimeout(function(){nndb.scrapeForJudges(phantomScriptToRun, nextStep)}, 500);
 
    } else{
        if(this.scrapingForJudgesComplete())
            nextStep(null, "Scraping to collect judges complete");
        else
-        setTimeout(function(){currNndb.scrapeForJudges(phantomScriptToRun, nextStep);}, 1000);
+        setTimeout(function(){nndb.scrapeForJudges(phantomScriptToRun, nextStep);}, 1000);
    }
 
 }
@@ -83,16 +82,15 @@ Nndb.prototype.parseResults = function(nextStep) {
 
     this.judgesDataString = this.judgesDataString.substring(0,this.judgesDataString.length-1);
     this.judgesData = this.judgesDataString.split("\n");
-    removeNoMoreResultsToken(this); //Remove the NO_MORE_RESULTS entry
-    console.log(this.judgesData);
+    removeNoMoreResultsToken(this.judgesData); //Remove the NO_MORE_RESULTS entry
     nextStep(null, "Parse Results after scraping for Judges complete");
 }
 
 
 
-function removeNoMoreResultsToken(nndb){
-    while(nndb.judgesData.indexOf("NO_MORE_RESULTS")!=-1)
-        nndb.judgesData.splice(-1, 1);
+function removeNoMoreResultsToken(judgesData){
+    while(judgesData.indexOf("NO_MORE_RESULTS")!=-1)
+        judgesData.splice(-1, 1);
 }
 
 
@@ -126,6 +124,7 @@ Nndb.prototype.scrapeAdditionalInfoComplete = false;
 
 function scrapeAdditionalInfoForJudge(nndb, phantomScriptToRun, judge, index, nextStep) {
 
+    var judgesData = nndb.judgesData;
     var child = nndb.child_process.spawn('phantomjs', [phantomScriptToRun, judge]);
     nndb.runningPhantomCount++;
 
@@ -147,15 +146,23 @@ function scrapeAdditionalInfoForJudge(nndb, phantomScriptToRun, judge, index, ne
             judge = judgesInfo.split('\n')[0] || {};
         else
             judge = judgesInfo.split('\n')[2] || {};
-        console.log(judge);
 
-        judge = JSON.parse(judge); //convert string into json object
+        try{
+            judge = JSON.parse(judge); //convert string into json object
+        }catch(err)
+        {
+
+        }
 
         if(judge.birthplace == undefined)
             judge.birthplace = "Not Available";
-        nndb.judgesData[index] = judge;
-        if(nndb.runningPhantomCount == 0)
-            nextStep(null, "Scrape for Additional Infomration on Judges complete");
+        judgesData[index] = judge;
+        if(nndb.runningPhantomCount == 0) {
+            setTimeout(function(){
+                if(nndb.runningPhantomCount == 0)
+                    nextStep(null, "Scrape for Additional information on Judges complete");
+            }, 1000);
+        }
     });
 
 }

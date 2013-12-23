@@ -43,21 +43,14 @@ describe("scrape for judges ", function() {
 
     });
 
-    afterEach(function() {
-
-        stdout.logToStdout('data', 'NO_MORE_RESULTS\n');
-        child_process.emit('exit');
-        stdout = null;
-        child_process = null;
-        nndb = null;
-
-    });
 
     it("spawns child process", function() {
 
         spyOn(child_process,"spawn").andReturn(child_process);
         nndb.scrapeForJudges('../src/scrape_nndb_judges.js', nextStep);
         expect(child_process.spawn).toHaveBeenCalledWith( 'phantomjs',['../src/scrape_nndb_judges.js', jasmine.any(Number)]);
+        stdout.logToStdout('data', 'NO_MORE_RESULTS\n');
+        child_process.emit('exit');
 
     });
 
@@ -87,7 +80,7 @@ describe("scrape for judges ", function() {
         stdout.logToStdout('data', 'NO_MORE_RESULTS\n');
         nndb.parseResults(nextStep);
         expect(nndb.judgesData.length).toBe(0);
-
+        child_process.emit('exit');
     });
 
 
@@ -123,6 +116,7 @@ describe("scrape for judges ", function() {
 
 
     });
+
 
 
     describe("When additional info element are not present in the page", function(){

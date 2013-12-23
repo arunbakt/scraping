@@ -22,7 +22,7 @@ page.onConsoleMessage = function(msg) {
 
 try {
 
-    page.settings.resourceTimeout = 500; // 5 seconds
+    page.settings.resourceTimeout = 1000; // 5 seconds
 
 
     page.open(judge.next_page,function(status) {

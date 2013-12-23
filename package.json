@@ -1,35 +1,36 @@
 {
-  "name": "scrape_nndb",
-  "version": "0.0.1",
-  "description": "A node program that scrapes nndb to collect judges data",
-  "main": "nndb_runner.js",
-  "dependencies": {
-    "jasmine-node": "~1.11.0",
-    "phantomjs": "~1.9.2-4",
-    "requirejs": "~2.1.9",
-    "request": "~2.27.0",
-      "async": "~0.2.9"
-  },
-  "devDependencies": {
-    "grunt-jasmine-node-coverage": "~0.1.7",
-    "grunt-contrib-jasmine": "~0.5.2",
-    "grunt": "~0.4.2",
-    "istanbul": "~0.2.0",
-    "grunt-bg-shell": "~2.3.1",
-    "async": "~0.2.9"
-  },
-  "scripts": {
-    "start": "node ./src/nndb_runner",
-    "test": "istanbul test --dir ./spec/nndb_spec.js jasmine-node -- --junitreport test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/arunbakt/scraping.git"
-  },
-  "author": "arun bakt",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/arunbakt/scraping/issues"
-  },
-  "homepage": "https://github.com/arunbakt/scraping"
+    "name": "scrape_nndb",
+    "version": "0.0.1",
+    "description": "A node program that scrapes nndb to collect judges data",
+    "main": "nndb_runner.js",
+    "dependencies": {
+        "jasmine-node": "~1.11.0",
+        "phantomjs": "~1.9.2-4",
+        "requirejs": "~2.1.9",
+        "request": "~2.27.0",
+        "async": "~0.2.9"
+    },
+    "devDependencies": {
+        "grunt-open":"~0.2.0",
+        "grunt-jasmine-node":"~0.1.0",
+        "grunt-contrib-jasmine": "~0.5.2",
+        "grunt": "~0.4.2",
+        "istanbul": "~0.2.0",
+        "grunt-bg-shell": "~2.3.1",
+        "async": "~0.2.9"
+    },
+    "scripts": {
+        "start": "node ./src/nndb_runner",
+        "test": "istanbul test --dir ./spec/nndb_spec.js jasmine-node -- --junitreport test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/arunbakt/scraping.git"
+    },
+    "author": "arun bakt",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/arunbakt/scraping/issues"
+    },
+    "homepage": "https://github.com/arunbakt/scraping"
 }

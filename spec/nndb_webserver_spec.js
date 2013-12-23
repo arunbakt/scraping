@@ -107,11 +107,11 @@ describe("Given an array of judges data", function(){
     });
 
     it("an object with judges data grouped by state exists", function(){
-
-        nndbWebServer.groupByState();
-        expect(nndbWebServer.judgesByState).toBeDefined();
-        expect(nndbWebServer.judgesByState["NY"].length).toBeGreaterThan(1);
-        expect(nndbWebServer.judgesByState["Not Available"].length).toBeGreaterThan(1);
+        var judgesByState = {};
+        nndbWebServer.groupByState(judgesByState);
+        expect(judgesByState).toBeDefined();
+        expect(judgesByState["NY"].length).toBeGreaterThan(1);
+        expect(judgesByState["Not Available"].length).toBeGreaterThan(1);
 
     });
 
