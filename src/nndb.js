@@ -19,7 +19,7 @@ Nndb = function(child_process) {
 
 var scrape = function(nndb, phantomScriptToRun, offset) {
 
-    var child =  nndb.child_process.spawn('phantomjs', [phantomScriptToRun, offset]);
+    var child =  nndb.child_process.spawn('./node_modules/phantomjs/bin/phantomjs', [phantomScriptToRun, offset]);
     nndb.runningPhantomCount++;
 
     child.stdout.on('data',function(data){
@@ -124,11 +124,25 @@ Nndb.prototype.scrapeAdditionalInfoComplete = false;
 
 function scrapeAdditionalInfoForJudge(nndb, phantomScriptToRun, judge, index, nextStep) {
 
-    var judgesData = nndb.judgesData;
-    var child = nndb.child_process.spawn('phantomjs', [phantomScriptToRun, judge]);
+    //var judgesData = nndb.judgesData;
+    var child = nndb.child_process.spawn('./node_modules/phantomjs/bin/phantomjs', [phantomScriptToRun, judge]);
     nndb.runningPhantomCount++;
 
     var judgesInfo = "";
+
+    var scrapingAdditionInfoCompelete = function() {
+
+        if(nndb.runningPhantomCount === 0) {
+            var infoGathered = function(judge) {
+                return judge.birthplace !== undefined;
+            }
+            if(nndb.judgesData.every(infoGathered)) {
+                nextStep(null, "Scrape for Additional information on Judges complete");
+            }
+        }
+    }
+
+
     child.stdout.on('data', function(data){
         judgesInfo = judgesInfo + data;
     });
@@ -138,31 +152,40 @@ function scrapeAdditionalInfoForJudge(nndb, phantomScriptToRun, judge, index, ne
     });
 
     child.on('exit', function (code) {
+
         nndb.runningPhantomCount--;
-        if(judgesInfo.length == 0)
-            return;
 
-        if(judgesInfo.split('\n')[2] == undefined)
-            judge = judgesInfo.split('\n')[0] || {};
-        else
-            judge = judgesInfo.split('\n')[2] || {};
+        if(code === 1) {
+            judge = JSON.parse(judge);
+            judge['birthplace'] = "Birthplace lookup timed out";
+            nndb.judgesData[index] = judge;
+            scrapingAdditionInfoCompelete();
 
-        try{
-            judge = JSON.parse(judge); //convert string into json object
-        }catch(err)
-        {
+        } else {
+
+
+            if(judgesInfo.split('\n')[2] == undefined)
+                judge = judgesInfo.split('\n')[0] || {};
+            else
+                judge = judgesInfo.split('\n')[2] || {};
+
+            try{
+                judge = JSON.parse(judge); //convert string into json object
+            }catch(err)
+            {
+
+            }
+
+            if(judge.birthplace === undefined) {
+                judge.birthplace = "Not Available";
+            }
+
+            nndb.judgesData[index] = judge;
+
+            scrapingAdditionInfoCompelete();
 
         }
 
-        if(judge.birthplace == undefined)
-            judge.birthplace = "Not Available";
-        judgesData[index] = judge;
-        if(nndb.runningPhantomCount == 0) {
-            setTimeout(function(){
-                if(nndb.runningPhantomCount == 0)
-                    nextStep(null, "Scrape for Additional information on Judges complete");
-            }, 1000);
-        }
     });
 
 }

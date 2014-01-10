@@ -11,7 +11,7 @@ catch(err)
 {
     console.log("PARSE ERROR "+err);
     console.log("JSON STRING "+system.args[1]);
-    phantom.exit();
+    phantom.exit(1);
 }
 
 page.onConsoleMessage = function(msg) {
@@ -22,8 +22,11 @@ page.onConsoleMessage = function(msg) {
 
 try {
 
-    page.settings.resourceTimeout = 1000; // 5 seconds
+    page.settings.resourceTimeout = 5000; // 10 second
 
+    page.onResourceTimeout = function(e) {
+        phantom.exit(1);
+    };
 
     page.open(judge.next_page,function(status) {
         if(status === "success") {

@@ -57,7 +57,7 @@ page.open('http://search.nndb.com/search/nndb.cgi?n=judge&omenu=unspecified&offs
 
 
     }
-    phantom.exit();
+    phantom.exit(0);
 
 });
 

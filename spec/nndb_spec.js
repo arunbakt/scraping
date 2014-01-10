@@ -48,7 +48,7 @@ describe("scrape for judges ", function() {
 
         spyOn(child_process,"spawn").andReturn(child_process);
         nndb.scrapeForJudges('../src/scrape_nndb_judges.js', nextStep);
-        expect(child_process.spawn).toHaveBeenCalledWith( 'phantomjs',['../src/scrape_nndb_judges.js', jasmine.any(Number)]);
+        expect(child_process.spawn).toHaveBeenCalledWith( './node_modules/phantomjs/bin/phantomjs',['../src/scrape_nndb_judges.js', jasmine.any(Number)]);
         stdout.logToStdout('data', 'NO_MORE_RESULTS\n');
         child_process.emit('exit');
 

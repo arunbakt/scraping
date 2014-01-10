@@ -65,7 +65,7 @@ NndbWebServer.prototype.show = function(res) {
             });
 			
             judges.forEach(function(judge){
-                var mS = (judge.militaryService==undefined)?'':'Military Service';
+                var mS = (judge.militaryService === undefined) ? '' : 'Military Service';
                 content = content + '<tr><td>'+ judge.name +'</td><td>'+ mS +'</td></tr>'
             });
             content =  content + '</table>';
@@ -102,19 +102,21 @@ NndbWebServer.prototype.groupByState = function(judgesByState) {
 
     var judgesData = this.nndbRunner.nndb.judgesData;
     judgesData.forEach(function(judge){
-        if(judge.birthplace == undefined)
+        if(judge.birthplace === undefined) {
+            console.log("undefined birthplace "+judge);
             insertJudgeForState(judgesByState, "Birthplace Not Available",judge);
-        else if(judge.birthplace.split(',')[1] == undefined)
+        } else if(judge.birthplace.split(',')[1] === undefined){
             insertJudgeForState(judgesByState, judge.birthplace.split(',')[0], judge);
-        else
+        } else {
             insertJudgeForState(judgesByState, judge.birthplace.split(',')[1].trim(), judge);
+        }
     });
 
 }
 
 function insertJudgeForState(judgesByState, state, judge) {
 
-    if(judgesByState[state] == undefined)
+    if(judgesByState[state] === undefined)
         judgesByState[state] = [];
 
     judgesByState[state].push(judge);
